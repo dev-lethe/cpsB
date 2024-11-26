@@ -12,17 +12,15 @@ from img2feat import antbee
 from util import accuracy
 ####
 
-def regression(X, Y, k_neighbor):
-    k_neighbor = int(k_neighbor)
-    model = KNeighborsClassifier(k_neighbor)
+def regression(X, Y, k):
+    model = KNeighborsClassifier(k)
     model.fit(X, Y)
     return model
 
 def main(dir_imgs, network, model_name, k_neighbor):
-    k_neighbor = int(k_neighbor)
+    k = int(k_neighbor)
     net = CNN(network)
-    # (Train, ytrain), (Test, ytest) = antbee.load()
-
+    #(Train, Ytrain), (Test, Ytest) = antbee.load()
     (Xtrain, Ytrain), (Xtest, Ytest) = antbee.load_squared_npy(network)
     
     #Train = np.array(Train)
@@ -33,9 +31,14 @@ def main(dir_imgs, network, model_name, k_neighbor):
     #Xtrain = net([Train])
     #Xtest = net([Test])
 
-    model = regression(Xtrain, Ytrain, k_neighbor)
+    ylist = []
+    for i in range(1, k+1):
+        model = regression(Xtrain, Ytrain, i)
+        ypred = model.predict(Xtest)
+        ylist.append(ypred)
+    ylist = np.array(ylist)
+    ypred = np.mean(ylist, axis=0, dtype=int)
 
-    ypred = model.predict(Xtest)
     acc = accuracy(Ytest, ypred)
     print("test acc :", acc)
 

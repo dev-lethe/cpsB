@@ -35,7 +35,7 @@ def main(dir_imgs, network, model_name):
 
     ypred = model.predict(Xtest)
     acc = accuracy(Ytest, ypred)
-    print("acc :", acc)
+    print("test acc :", acc)
 
 if(__name__ =="__main__"):
     parser = argparse.ArgumentParser(description="Train model")

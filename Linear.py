@@ -9,7 +9,7 @@ from sklearn.linear_model import LinearRegression
 ####
 from img2feat import antbee
 ####
-from util import accuracy
+from util import DA_lr, accuracy
 ####
 
 def regression(X, Y):
@@ -22,6 +22,7 @@ def main(dir_imgs, network, model_name):
     # (Train, ytrain), (Test, ytest) = antbee.load()
 
     (Xtrain, Ytrain), (Xtest, Ytest) = antbee.load_squared_npy(network)
+    (Xtrain, Ytrain) = DA_lr(Xtrain, Ytrain)
     
     #Train = np.array(Train)
     #Test = np.array(Test)
@@ -35,7 +36,7 @@ def main(dir_imgs, network, model_name):
 
     ypred = model.predict(Xtest)
     acc = accuracy(Ytest, ypred)
-    print("acc :", acc)
+    print("test acc :", acc)
 
 if(__name__ =="__main__"):
     parser = argparse.ArgumentParser(description="Train model")
